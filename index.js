@@ -93,9 +93,9 @@ const btn=document.getElementById("next-btn");
 const point=document.getElementById("score");
 const total=document.getElementById("total");
 const btn_ref=document.getElementById("refaire");
-function afficherquetions(index){
+function afficherquestions(index){
     if(index>=questions.length){
-        afficherResultat();
+        afficherResultats();
         return;
     }
     const ques=questions[index];
@@ -134,5 +134,36 @@ function selectionnerReponse(indiceSelectionne) {
         boutons[question.reponse].classList.add("correct");
     }
     // Active le bouton suivant
-    boutonSuivant.style.display = "block";
-    }
+    btn.style.display = "block";
+}
+// Passe à la question suivante
+function questionSuivante() {
+    indiceQuestionActuelle++;
+    btn.style.display = "none";
+    afficherquestions(indiceQuestionActuelle);
+}
+
+// Affiche les résultats finaux
+function afficherResultats() {
+    question.textContent = `Quiz terminé ! Votre score : ${score}/${questions.length}`;
+    choix.innerHTML = "";
+    btn.style.display = "none";
+    btn_ref.style.display = "block";
+}
+
+// Redémarre le quiz
+function recommencerQuiz() {
+    score = 0;
+    indiceQuestionActuelle = 0;
+    btn_ref.style.display = "none";
+    afficherquestions(indiceQuestionActuelle);
+}
+
+// Événements
+btn.addEventListener("click", questionSuivante);
+btn_ref.addEventListener("click", recommencerQuiz);
+
+// Démarrer le quiz
+document.addEventListener("DOMContentLoaded", () => {
+    afficherquestions(indiceQuestionActuelle);
+});
