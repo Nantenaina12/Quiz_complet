@@ -1,5 +1,9 @@
-let score=0;
+let score = 0;
 let indiceQuestionActuelle = 0;
+let tempsRestant;
+let timer;
+const dureeParQuestion = 15; // 15 secondes par question
+
 const questions = [
     {
         question: "Quelle est la capitale de la France ?",
@@ -87,63 +91,110 @@ const questions = [
         reponse: 0
     }
 ];
-const question=document.getElementById("question");
-const choix=document.getElementById("choices");
-const btn=document.getElementById("next-btn");
-const point=document.getElementById("score");
-const total=document.getElementById("total");
-const btn_ref=document.getElementById("refaire");
-function afficherquestions(index){
-    if(index>=questions.length){
+
+const question = document.getElementById("question");
+const choix = document.getElementById("choices");
+const btn = document.getElementById("next-btn");
+const point = document.getElementById("score");
+const total = document.getElementById("total");
+const btn_ref = document.getElementById("refaire");
+const tempsElement = document.getElementById("temps");
+
+function demarrerChronometre() {
+    tempsRestant = dureeParQuestion;
+    tempsElement.textContent = tempsRestant;
+    tempsElement.style.color = "black";
+    
+    timer = setInterval(() => {
+        tempsRestant--;
+        tempsElement.textContent = tempsRestant;
+        
+        if (tempsRestant <= 5) {
+            tempsElement.style.color = "red";
+        }
+        
+        if (tempsRestant <= 0) {
+            clearInterval(timer);
+            tempsEcoule();
+        }
+    }, 1000);
+}
+
+function arreterChronometre() {
+    clearInterval(timer);
+    tempsElement.style.color = "black";
+}
+
+function tempsEcoule() {
+    const questionActuelle = questions[indiceQuestionActuelle];
+    const boutons = choix.querySelectorAll(".bouton-choix");
+    
+    boutons.forEach(bouton => {
+        bouton.disabled = true;
+    });
+    
+    boutons[questionActuelle.reponse].classList.add("correct");
+    
+    setTimeout(() => {
+        questionSuivante();
+    }, 2000);
+}
+
+function afficherquestions(index) {
+    arreterChronometre();
+    
+    if (index >= questions.length) {
         afficherResultats();
         return;
     }
-    const ques=questions[index];
-    question.textContent=ques.question;
-    choix.textContent="";
+    
+    const ques = questions[index];
+    question.textContent = ques.question;
+    choix.textContent = "";
+    
     ques.options.forEach((option, i) => {
-
         const bouton = document.createElement("button");
         bouton.textContent = option;
         bouton.classList.add("bouton-choix");
-        bouton.addEventListener("click", () => 
-            selectionnerReponse(i));
-            choix.appendChild(bouton);
+        bouton.addEventListener("click", () => selectionnerReponse(i));
+        choix.appendChild(bouton);
     });
+    
     total.textContent = questions.length;
     point.textContent = score;
+    btn.style.display = "none";
+    
+    demarrerChronometre();
 }
 
 function selectionnerReponse(indiceSelectionne) {
-
-    const question = questions[indiceQuestionActuelle];
-    // Désactive tous les boutons après sélection
+    arreterChronometre();
+    
+    const questionActuelle = questions[indiceQuestionActuelle];
     const boutons = choix.querySelectorAll(".bouton-choix");
+    
     boutons.forEach(bouton => {
         bouton.disabled = true;
     });
 
-    // Vérifie la réponse
-    if (indiceSelectionne === question.reponse) {
+    if (indiceSelectionne === questionActuelle.reponse) {
         score++;
         point.textContent = score;
         boutons[indiceSelectionne].classList.add("correct");
-    } else{
-
+    } else {
         boutons[indiceSelectionne].classList.add("incorrect");     
-        boutons[question.reponse].classList.add("correct");
+        boutons[questionActuelle.reponse].classList.add("correct");
     }
-    // Active le bouton suivant
+    
     btn.style.display = "block";
 }
-// Passe à la question suivante
+
 function questionSuivante() {
     indiceQuestionActuelle++;
     btn.style.display = "none";
     afficherquestions(indiceQuestionActuelle);
 }
 
-// Affiche les résultats finaux
 function afficherResultats() {
     question.textContent = `Quiz terminé ! Votre score : ${score}/${questions.length}`;
     choix.innerHTML = "";
@@ -151,19 +202,17 @@ function afficherResultats() {
     btn_ref.style.display = "block";
 }
 
-// Redémarre le quiz
 function recommencerQuiz() {
+    arreterChronometre();
     score = 0;
     indiceQuestionActuelle = 0;
     btn_ref.style.display = "none";
     afficherquestions(indiceQuestionActuelle);
 }
 
-// Événements
 btn.addEventListener("click", questionSuivante);
 btn_ref.addEventListener("click", recommencerQuiz);
 
-// Démarrer le quiz
 document.addEventListener("DOMContentLoaded", () => {
     afficherquestions(indiceQuestionActuelle);
 });

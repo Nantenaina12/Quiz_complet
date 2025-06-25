@@ -1,0 +1,158 @@
+/* Styles généraux */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+#quiz-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour le titre des questions */
+#question {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+/* Conteneur du chronomètre */
+#chrono-container {
+    margin: 15px 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#temps {
+    color: #2c3e50;
+    font-size: 1.3em;
+    transition: color 0.3s;
+}
+
+/* Style quand le temps est critique */
+#temps.temps-critique {
+    color: #e74c3c;
+    animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+/* Conteneur des choix */
+#choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+/* Style des boutons de réponse */
+.bouton-choix {
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1em;
+    text-align: left;
+}
+
+.bouton-choix:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.bouton-choix:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Styles pour les réponses correctes/incorrectes */
+.correct {
+    background-color: #2ecc71 !important;
+}
+
+.incorrect {
+    background-color: #e74c3c !important;
+}
+
+/* Boutons de navigation */
+#next-btn, #refaire {
+    padding: 12px 25px;
+    background-color: #9b59b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+#refaire{
+    align-items: center;
+}
+
+#next-btn:hover, #refaire:hover {
+    background-color: #8e44ad;
+}
+
+#next-btn {
+    display: none;
+}
+
+#refaire {
+    display: none;
+    margin-left: 10px;
+}
+
+/* Conteneur des résultats */
+#result {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#score {
+    font-weight: bold;
+    color: #27ae60;
+    font-size: 1.2em;
+}
+
+#total {
+    font-weight: bold;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    #quiz-container {
+        padding: 15px;
+    }
+    
+    #question {
+        font-size: 1.3em;
+    }
+    
+    .bouton-choix {
+        padding: 10px;
+    }
+}
