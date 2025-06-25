@@ -58,7 +58,7 @@ const questions = [
     {
         question: "Une année contient combien de saisons?",
         options: ["5", "3", "4", "2"],
-        reponse: 3
+        reponse: 2
     },
     {
         question: " Qui est le premier navigateur a decouvert l'Amérique durant les grandes decouvertes?",
